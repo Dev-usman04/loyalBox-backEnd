@@ -4,14 +4,14 @@ const User = require('../models/User');
 
 
 const createReward = asyncHandler(async (req, res) => {
-  const { name, pointsRequired, description } = req.body;
+  const { name, Points, description } = req.body;
 
-  if (!name || !pointsRequired) {
+  if (!name || !Points) {
     res.status(400);
-    throw new Error('Name and pointsRequired are required');
+    throw new Error('Name and Points are required');
   }
 
-  const reward = await Reward.create({ name, pointsRequired, description });
+  const reward = await Reward.create({ name, Points, description });
   res.status(201).json(reward);
 });
 
@@ -50,13 +50,13 @@ const getAllTransactions = asyncHandler(async (req, res) => {
   const users = await User.find().select('name email transactions').lean(); // <-- .lean() is key
 
   const allTransactions = users.flatMap(user =>
-    user.transactions.map(tx => ({
+    user.transactions.map(item => ({
       userName: user.name,
       email: user.email,
-      type: tx.type,
-      amount: tx.amount,
-      description: tx.description,
-      date: tx.date
+      type: item.type,
+      amount: item.amount,
+      description: item.description,
+      date: item.date
     }))
   );
 
