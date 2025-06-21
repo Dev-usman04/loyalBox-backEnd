@@ -1,21 +1,11 @@
 const express = require('express');
 const router = express.Router();
+const userController = require('../controllers/userController');
+const { auth } = require('../middleware/auth');
 
-const {
-  registerUser,
-  loginUser,
-  buyItem,
-  redeemReward,
-  getUserTransactions
-} = require('../controllers/userController');
-const { protect , adminOnly} = require('../middleware/authMiddleware');
-
-
-router.post('/register', registerUser);
-router.post('/login', loginUser);
-router.post('/buy', protect, buyItem);
-router.post('/redeem', protect, redeemReward);
-router.get('/transactions', protect, adminOnly, getUserTransactions);
-
+router.get('/rewards', auth, userController.getRewards);
+router.post('/purchase', auth, userController.purchaseItem);
+router.post('/redeem', auth, userController.redeemReward);
+router.get('/transactions', auth, userController.getTransactionHistory);
 
 module.exports = router;
