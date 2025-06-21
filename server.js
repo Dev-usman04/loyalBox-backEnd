@@ -16,6 +16,7 @@ app.use(express.json());
 const swaggerDocument = JSON.parse(fs.readFileSync('./swagger.json', 'utf8'));
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
+// Connect to MongoDB
 connectDB();
 
 app.use('/api/auth', authRoutes);
