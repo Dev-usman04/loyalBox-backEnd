@@ -1,11 +1,14 @@
 const express = require('express');
 const router = express.Router();
-const userController = require('../controllers/userController');
+const {getRewards,
+  purchaseItem,
+  redeemReward,
+  getTransactionHistory} = require('../controllers/userController');
 const { auth } = require('../middleware/auth');
 
-router.get('/rewards', auth, userController.getRewards);
-router.post('/purchase', auth, userController.purchaseItem);
-router.post('/redeem', auth, userController.redeemReward);
-router.get('/transactions', auth, userController.getTransactionHistory);
+router.get('/rewards', auth, getRewards);
+router.post('/purchase', auth, purchaseItem);
+router.post('/redeem', auth, redeemReward);
+router.get('/transactions', auth, getTransactionHistory);
 
 module.exports = router;

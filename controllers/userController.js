@@ -2,7 +2,7 @@ const User = require('../models/User');
 const Reward = require('../models/Reward');
 const Transaction = require('../models/Transaction');
 
-exports.getRewards = async (req, res) => {
+const getRewards = async (req, res) => {
   try {
     const rewards = await Reward.find();
     res.json(rewards);
@@ -11,7 +11,7 @@ exports.getRewards = async (req, res) => {
   }
 };
 
-exports.purchaseItem = async (req, res) => {
+const purchaseItem = async (req, res) => {
   try {
     const { itemName, points } = req.body;
     const user = await User.findById(req.user.id);
@@ -32,7 +32,7 @@ exports.purchaseItem = async (req, res) => {
   }
 };
 
-exports.redeemReward = async (req, res) => {
+const redeemReward = async (req, res) => {
   try {
     const { rewardId } = req.body;
     const user = await User.findById(req.user.id);
@@ -60,11 +60,18 @@ exports.redeemReward = async (req, res) => {
   }
 };
 
-exports.getTransactionHistory = async (req, res) => {
+const getTransactionHistory = async (req, res) => {
   try {
     const transactions = await Transaction.find({ user: req.user.id }).sort({ date: -1 });
     res.json(transactions);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching transactions', error });
   }
+};
+
+module.exports = {
+  getRewards,
+  purchaseItem,
+  redeemReward,
+  getTransactionHistory
 };
